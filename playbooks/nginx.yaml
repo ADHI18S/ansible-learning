@@ -11,11 +11,6 @@
       state: latest
       update_cache: yes
 
-  - name: Start nginx
-    service:
-      name: nginx
-      state: started
-
   - name: copy the html files
     copy:
       src: /home/adhi18s/ansible-learning
