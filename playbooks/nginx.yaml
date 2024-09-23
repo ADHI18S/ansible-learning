@@ -1,0 +1,23 @@
+---
+- hosts: all
+  remote_user: ubuntu
+  become: yes
+
+
+  tasks:
+  - name: Install nginx
+    apt:
+      name: nginx
+      state: latest
+      update_cache: yes
+
+  - name: Start nginx
+    service:
+      name: nginx
+      state: started
+
+  - name: copy the html files
+    copy:
+      src: /home/adhi18s/ansible-learning
+      dest: /var/www/html/index.html
+      mode: '777'
