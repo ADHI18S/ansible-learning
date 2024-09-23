@@ -1,23 +1,40 @@
+---
 - hosts: all
-  remote_user: ubuntu
   become: true
   tasks:
-    - name: jenkins install
-      apt_repository:
-        name: jenkins
-        repo: https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
-        state: present
-    
-    - name: Install java&jenkins
+
+    - name: Update apt package manager
       apt:
-        name: " {{ item }} "
+        update_cache: yes
+
+    - name: Install dependencies for Jenkins
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - openjdk-11-jdk
+        - gnupg2
+        - ca-certificates
+
+    - name: Add Jenkins repository key
+      apt_key:
+        url: https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+        state: present
+
+    - name: Add Jenkins repository to sources list
+      apt_repository:
+        repo: deb http://pkg.jenkins.io/debian-stable binary/
+        state: present
+
+    - name: Install Jenkins
+      apt:
+        name: jenkins
         state: present
         update_cache: yes
-      loop:
-        - java
-        - jenkins 
-        
-    - name: start jenkins
-      service:
+
+    - name: Ensure Jenkins is started and enabled on boot
+      systemd:
         name: jenkins
         state: started
+        enabled: true
+
