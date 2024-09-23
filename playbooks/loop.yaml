@@ -1,0 +1,14 @@
+---
+- hosts: all
+  remote_user: ubuntu
+  become: true
+  tasks:
+    - name: Install tools
+      apt:
+        name: " {{ item }} "
+        state: present
+        update_cache: yes
+    loop:
+      - mysql
+      - php
+      - unzip
