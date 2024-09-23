@@ -1,0 +1,18 @@
+in this method 1st we enable passwd authentication no to yes on our instance
+
+#  sudo vim /etc/ssh/sshd_config.d/60-cloudimg-settings.conf
+
+   then change no to yes
+
+then restart the ssh by
+#  sudo systemctl restart ssh
+
+then set the passwd for the instance
+
+#  sudo passwd ubuntu
+
+# ssh-copy-id ubuntu@public-ip
+
+
+then login without keypair its get successfull
+

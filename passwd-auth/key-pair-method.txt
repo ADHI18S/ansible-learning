@@ -1,0 +1,55 @@
+1st we have to move the key pair from windows to wsl(ubuntu)
+#######################
+copy the file from windows to wsl
+#  copy C:\Users\sadhi\Downloads\network.pem \\wsl$\Ubuntu\home\adhi18s\.ssh\network.pem
+set appropriate permission to the file
+#  chmod 600 network.pem  
+
+know we can successfully login on wsl ubuntu
+
+##########################################
+next step is to without keypair login to the instance
+
+#  ssh-keygen -t rsa -b 2048
+(this will create a public and private key in windows)
+
+: This command creates a pair of keys (a private key and a public key). The public key will go to your EC2 instances, allowing them to recognize your Windows machine when you try to connect.
+
+-t rsa specifies the type of key (RSA).
+-b 2048 specifies the key length (2048 bits, which is secure).
+
+
+# cat ~/.ssh/id_rsa.pub
+(copy the public key)
+
+#  ssh -i path/to/your/key.pem ubuntu@your-ec2-public-ip
+(login to ec2 instance)
+
+#  nano ~/.ssh/authorized_keys
+(clean all and paste the copied key )
+ This opens the authorized_keys file in the Nano text editor, where you’ll paste your public key. This file tells the EC2 instance which public keys are allowed to connect.
+
+Follow-Up:
+
+Paste the Public Key: Right-click and paste the public key you copied earlier.
+Save and Exit: Press CTRL + O to save, then CTRL + X to exit.
+  
+#  chmod 700 ~/.ssh
+chmod 600 ~/.ssh/authorized_keys
+
+ These commands set the correct permissions for security:
+
+chmod 700 ~/.ssh: This makes the .ssh directory only accessible by you (the owner).
+chmod 600 ~/.ssh/authorized_keys: This makes the authorized_keys file readable and writable only by you.
+
+# ssh ubuntu@your-ec2-public-ip
+(test )
+
+This command attempts to connect to your EC2 instance without needing to enter a password. If everything is set up correctly, you should connect without a password prompt.
+
+
+
+
+
+
+

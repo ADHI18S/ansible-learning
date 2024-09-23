@@ -1,0 +1,23 @@
+- hosts: all
+  remote_user: ubuntu
+  become: true
+  tasks:
+    - name: jenkins install
+      apt_repository:
+        name: jenkins
+        repo: https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+        state: present
+    
+    - name: Install java&jenkins
+      apt:
+        name: " {{ item }} "
+        state: present
+        update_cache: yes
+      loop:
+        - java
+        - jenkins 
+        
+    - name: start jenkins
+      service:
+        name: jenkins
+        state: started
