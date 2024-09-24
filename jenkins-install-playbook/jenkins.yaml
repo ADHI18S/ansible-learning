@@ -34,19 +34,21 @@
         state: present
         update_cache: yes
 
-    - name: Ensure SELinux is set to enforcing mode
+    - name: Ensure Jenkins listens on port {{ ports }}
       ansible.builtin.lineinfile:
         path: /etc/default/jenkins
         regexp: '^HTTP_PORT='
-        line: HTTP_PORT={{ports}}
-      notify: restart jenkins
+        line: HTTP_PORT={{ ports }}
+      notify: restart Jenkins
 
     - name: Ensure Jenkins is started and enabled on boot
       systemd:
         name: jenkins
         state: started
-        enabled: true    
-    handlers: 
+        enabled: true
+
+  handlers:
     - name: restart Jenkins
+      systemd:
         name: jenkins
-        state: started
+        state: restarted
