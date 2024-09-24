@@ -1,6 +1,8 @@
 ---
 - hosts: all
   become: true
+  vars:
+    ports: 9090
   tasks:
 
     - name: Update apt package manager
@@ -32,9 +34,19 @@
         state: present
         update_cache: yes
 
+    - name: Ensure SELinux is set to enforcing mode
+      ansible.builtin.lineinfile:
+        path: /etc/default/jenkins
+        regexp: '^HTTP_PORT='
+        line: HTTP_PORT={{ports}}
+      notify: restart jenkins
+
     - name: Ensure Jenkins is started and enabled on boot
       systemd:
         name: jenkins
         state: started
-        enabled: true
-
+        enabled: true    
+    handlers: 
+    - name: restart Jenkins
+        name: jenkins
+        state: started
