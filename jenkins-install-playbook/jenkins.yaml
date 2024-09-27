@@ -3,16 +3,12 @@
   become: true
   vars:
     ports: 9090
-  tasks:
-
-    - name: Update apt package manager
-      apt:
-        update_cache: yes
-
+  tasks:        
     - name: Install dependencies for Jenkins
       apt:
         name: "{{ item }}"
         state: present
+        update_cache: yes
       loop:
         - openjdk-11-jdk
         - gnupg2

@@ -1,0 +1,7 @@
+- hosts: localhost
+  remote_user: ubuntu
+  become: true
+  tasks:
+    - name: Print the gateway for each host when defined
+      debug:
+      msg: my uname is {{ username }} and pass is {{ password }}
